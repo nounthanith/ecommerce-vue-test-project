@@ -1,55 +1,70 @@
 <template>
-  <section class="relative w-full max-w-7xl mx-auto overflow-hidden h-fit">
-    
-    <div 
-      class="absolute top-0 left-0 z-50 h-1 bg-[#FF1493] transition-all duration-300 ease-out"
+  <section
+    class="relative w-full max-w-7xl mx-auto overflow-hidden
+           min-h-[220px] sm:min-h-[320px] md:min-h-[420px] lg:min-h-[520px]"
+  >
+
+    <!-- Progress bar -->
+    <div
+      class="absolute top-0 left-0 z-0 h-1 bg-[#FF1493] transition-all duration-300"
       :style="{ width: `${((activeIndex + 1) / features.length) * 100}%` }"
     ></div>
 
+    <!-- Slider -->
     <div
       ref="slider"
-      class="flex w-full overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar"
+      class="flex w-full h-full overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar"
       @scroll="handleScroll"
     >
       <div
         v-for="(feature, index) in features"
         :key="index"
-        class="relative shrink-0 snap-center w-full h-fit"
+        class="relative shrink-0 snap-center w-full aspect-video sm:aspect-21/9"
       >
         <img
           :src="feature.image"
-          class="w-full h-fit object-cover transition-transform duration-2000"
+          class="w-full h-full object-cover transition-transform duration-2000"
           :class="{ 'scale-105': activeIndex === index }"
           alt="Feature"
         />
       </div>
     </div>
 
-    <div class="absolute right-6 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-4">
-      <button 
-        v-for="(_, i) in features" 
+    <!-- Dots (hidden on mobile) -->
+    <div
+      class="absolute right-4 top-1/2 -translate-y-1/2 z-40
+             hidden sm:flex flex-col gap-3"
+    >
+      <button
+        v-for="(_, i) in features"
         :key="i"
         @click="scrollTo(i)"
-        class="group relative flex items-center justify-end"
+        class="group flex items-center justify-end"
       >
-        <span 
-          class="mr-2 opacity-0 group-hover:opacity-100 text-white text-xs font-bold tracking-widest"
+        <span
+          class="mr-2 opacity-0 group-hover:opacity-100
+                 text-white text-xs font-bold tracking-widest"
         >
           0{{ i + 1 }}
         </span>
-        <div 
+        <div
           class="h-1 rounded-full transition-all duration-500"
-          :class="activeIndex === i 
-            ? 'w-8 bg-[#FF1493]' 
+          :class="activeIndex === i
+            ? 'w-8 bg-[#FF1493]'
             : 'w-4 bg-white/40 hover:bg-white'"
         ></div>
       </button>
     </div>
 
-    <div class="absolute bottom-6 left-6 z-40 flex items-baseline gap-2 text-white">
-      <span class="text-2xl font-light">0{{ activeIndex + 1 }}</span>
+    <!-- Counter -->
+    <div class="absolute bottom-4 left-4 z-40 flex items-baseline gap-2 text-white">
+      <span class="text-lg sm:text-xl md:text-2xl font-light">
+        0{{ activeIndex + 1 }}
+      </span>
       <span class="text-white/40">/</span>
-      <span class="text-white/40 text-sm">0{{ features.length }}</span>
+      <span class="text-white/40 text-xs sm:text-sm">
+        0{{ features.length }}
+      </span>
     </div>
 
   </section>
