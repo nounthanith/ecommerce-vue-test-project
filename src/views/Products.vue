@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import Carousel from '../features/Carousel.vue'
 import ProductCard from '../components/ProductCard.vue'
 import ProductCardLoader from '../components/ProductCardLoader.vue'
+import productsData from '../utils/productsData'
 
 interface Product {
   id: number
@@ -16,59 +17,24 @@ const isLoading = ref(true)
 const products = ref<Product[]>([])
 
 onMounted(() => {
-  // Simulate API loading
+  // Simulate loading delay
   setTimeout(() => {
-    products.value = [
-      {
-        id: 1,
-        name: 'Minimalist Chair',
-        price: 99.99,
-        category: 'Furniture',
-        image: 'https://picsum.photos/seed/1/800/800'
-      },
-      {
-        id: 2,
-        name: 'Glass Vase',
-        price: 149.99,
-        category: 'Decor',
-        image: 'https://picsum.photos/seed/2/800/800'
-      },
-      {
-        id: 3,
-        name: 'Hot Pink Lamp',
-        price: 199.99,
-        category: 'Lighting',
-        image: 'https://picsum.photos/seed/3/800/800'
-      },
-      {
-        id: 4,
-        name: 'Cotton Pillow',
-        price: 79.99,
-        category: 'Textiles',
-        image: 'https://picsum.photos/seed/4/800/800'
-      },
-      {
-        id: 5,
-        name: 'Ceramic Plate',
-        price: 129.99,
-        category: 'Kitchen',
-        image: 'https://picsum.photos/seed/5/800/800'
-      }
-    ]
-
+    products.value = productsData.map(product => ({
+      ...product,
+      id: Number(product.id) // Convert string id to number
+    }))
     isLoading.value = false
-  }, 2000)
+  }, 1500)
 })
+
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-white via-gray-50 to-white">
+  <div class="min-h-screen bg-linear-to-b from-white via-gray-50 to-white">
 
-    <!-- HERO / CAROUSEL -->
     <Carousel />
 
-    <!-- SECTION HEADER -->
-    <div class="pt-24 pb-12 px-6 md:px-12 max-w-7xl mx-auto">
+    <div class="pt-2 pb-12 px-6 md:px-12 max-w-7xl mx-auto">
       <div class="flex items-end justify-between gap-6">
 
         <div>
@@ -125,7 +91,6 @@ onMounted(() => {
           </div>
         </template>
 
-        <!-- PRODUCTS -->
         <template v-else>
           <div
             v-for="product in products"
@@ -152,7 +117,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-/* Hide scrollbar but keep swipe */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -161,7 +125,6 @@ onMounted(() => {
   scrollbar-width: none;
 }
 
-/* Fade-in animation */
 @keyframes fade-in {
   from {
     opacity: 0;
